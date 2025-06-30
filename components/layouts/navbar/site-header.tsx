@@ -11,6 +11,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+import { ModeToggle } from "./toggle-darkmode";
 
 type Notification = {
   id: number;
@@ -24,7 +25,7 @@ let simulatedId = 3;
 
 function formatRelativeTime(date: Date): string {
   const now = new Date();
-  const diff = Math.floor((now.getTime() - date.getTime()) / 1000); 
+  const diff = Math.floor((now.getTime() - date.getTime()) / 1000);
 
   if (diff < 60) return "just now";
   if (diff < 3600) return `${Math.floor(diff / 60)}m ago`;
@@ -48,14 +49,14 @@ const fetchNotifications = async (): Promise<Notification[]> => {
         {
           id: 1,
           title: "New user registered",
-          createdAt: new Date(Date.now() - 60 * 1000), 
+          createdAt: new Date(Date.now() - 60 * 1000),
           read: false,
           url: "/settings/user",
         },
         {
           id: 2,
           title: "System update available",
-          createdAt: new Date(Date.now() - 10 * 60 * 1000), 
+          createdAt: new Date(Date.now() - 10 * 60 * 1000),
           read: false,
           url: "/settings/user",
         },
@@ -128,7 +129,7 @@ export function SiteHeader() {
           orientation="vertical"
           className="mx-2 data-[orientation=vertical]:h-4"
         />
-
+        <ModeToggle />
         <div className="ml-auto flex items-center gap-2">
           <Popover>
             <PopoverTrigger asChild>

@@ -1,15 +1,12 @@
-import { AppSidebar } from "@/components/app-sidebar"
-import { ChartAreaInteractive } from "@/components/chart-area-interactive"
-import { DataTable } from "@/components/data-table"
-import { SectionCards } from "@/components/section-cards"
-import { SiteHeader } from "@/components/site-header"
-import {
-  SidebarInset,
-  SidebarProvider,
-} from "@/components/ui/sidebar"
+import { AppSidebar } from "@/components/layouts/sidebar/app-sidebar";
+import { ChartAreaInteractive } from "@/features/dashboard/chart-area-interactive";
+import { DataTable } from "@/features/dashboard/dashboard-datatable";
+import { SectionCards } from "@/components/ui/section-cards";
+import { SiteHeader } from "@/components/layouts/navbar/site-header";
+import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
 
-import data from "../data/dashboard.json"
-import ScheduleCalendar from "@/components/schedule-calendar"
+import data from "../data/dashboard.json";
+import ScheduleCalendar from "@/features/dashboard/schedule-calendar";
 
 export default function Page() {
   return (
@@ -32,7 +29,7 @@ export default function Page() {
                 <ChartAreaInteractive />
               </div>
               <div className="px-4 lg:px-6">
-              <ScheduleCalendar />
+                <ScheduleCalendar />
               </div>
               <DataTable data={data} />
             </div>
@@ -40,5 +37,5 @@ export default function Page() {
         </div>
       </SidebarInset>
     </SidebarProvider>
-  )
+  );
 }
