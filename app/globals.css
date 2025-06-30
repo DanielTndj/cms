@@ -120,3 +120,31 @@
     @apply bg-background text-foreground;
   }
 }
+
+
+/* Dark mode styles for react-select */
+.dark .select__control {
+  background-color: hsl(var(--background)) !important;
+  border-color: hsl(var(--border)) !important;
+}
+
+.dark .select__menu {
+  background-color: hsl(var(--background)) !important;
+  border-color: hsl(var(--border)) !important;
+}
+
+.dark .select__option--is-focused {
+  background-color: hsl(var(--muted)) !important;
+}
+
+.dark .select__multi-value {
+  background-color: hsl(var(--primary)/0.1) !important;
+}
+
+.dark .select__multi-value__label {
+  color: hsl(var(--primary)) !important;
+}
+
+.dark .select__input {
+  color: hsl(var(--foreground)) !important;
+}
