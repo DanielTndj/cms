@@ -15,19 +15,18 @@ import {
   LayoutDashboard,
 } from "lucide-react";
 
-import { NavMain } from "@/components/layouts/navbar/nav-main";
-import { NavProjects } from "@/components/layouts/navbar/nav-projects";
-import { NavUser } from "@/components/layouts/navbar/nav-user";
-import { TeamSwitcher } from "@/components/layouts/sidebar/team-switcher";
+import { NavMain } from "@components/layouts/navbar/nav-main";
+import { NavUser } from "@components/layouts/navbar/nav-user";
+import { TeamSwitcher } from "@components/layouts/sidebar/team-switcher";
 import {
   Sidebar,
   SidebarContent,
   SidebarFooter,
   SidebarHeader,
   SidebarRail,
-} from "@/components/ui/sidebar";
+} from "@components/ui/sidebar";
+import { ROUTES } from '@constants/routes';
 
-// This is sample data.
 const data = {
   user: {
     name: "admin",
@@ -54,23 +53,28 @@ const data = {
   navMain: [
     {
       title: "Dashboard",
-      url: "/dashboard", 
+      url: ROUTES.DASHBOARD, 
       icon: LayoutDashboard,
     },
     {
       title: "Settings",
-      url: "/settings", 
+      url: ROUTES.SETTINGS, 
       icon: Settings2,
       items: [
         {
           title: "User",
-          url: "/settings/user", 
+          url: ROUTES.SETTINGS_USER, 
         },
         {
           title: "Menu",
-          url: "/settings/menu", 
+          url: ROUTES.SETTINGS_MENU, 
         },
       ],
+    },    
+    {
+      title: "Pump Maintenance",
+      url: ROUTES.PUMP_MAINTENANCE, 
+      icon: Settings2,
     },
   ],
 };

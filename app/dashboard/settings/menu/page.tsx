@@ -1,10 +1,10 @@
-import { AppSidebar } from "@/components/layouts/sidebar/app-sidebar";
-import { ChartAreaInteractive } from "@/features/dashboard/components/chart-area-interactive";
-import { SectionCards } from "@/components/ui/section-cards";
-import { SiteHeader } from "@/components/layouts/navbar/site-header";
-import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
+import { AppSidebar } from "@components/layouts/sidebar/app-sidebar";
+import { ChartAreaInteractive } from "@features/dashboard/components/chart-area-interactive";
+import { SectionCards } from "@components/ui/section-cards";
+import { SiteHeader } from "@components/layouts/navbar/site-header";
+import { SidebarInset, SidebarProvider } from "@components/ui/sidebar";
 
-import ScheduleCalendar from "@/features/technician/components/TechnicianScheduleCalendar";
+import ScheduleCalendar from "@technician/components/views/TechnicianScheduleCalendar";
 
 export default function Page() {
   return (

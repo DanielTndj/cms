@@ -148,3 +148,43 @@
 .dark .select__input {
   color: hsl(var(--foreground)) !important;
 }
+
+
+/* Mobile Calendar Optimizations */
+@media (max-width: 768px) {
+  .calendar-month-view {
+    font-size: 0.75rem;
+  }
+  
+  .calendar-day-cell {
+    min-height: 80px;
+    padding: 0.25rem;
+  }
+  
+  .task-indicator-mobile {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    padding: 0.125rem 0.25rem;
+    border-radius: 0.25rem;
+    font-size: 0.75rem;
+  }
+  
+  .task-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background-color: currentColor;
+    flex-shrink: 0;
+  }
+  
+  /* Touch targets */
+  .calendar-day-cell {
+    min-height: 44px; /* iOS recommended touch target */
+  }
+  
+  .task-item {
+    min-height: 32px;
+    touch-action: manipulation;
+  }
+}

@@ -1,9 +1,9 @@
-import { AppSidebar } from "@/components/layouts/sidebar/app-sidebar";
+import { AppSidebar } from "@components/layouts/sidebar/app-sidebar";
 import { ChartAreaInteractive } from "@/features/dashboard/components/chart-area-interactive";
 import { DataTable } from "@/features/dashboard/components/dashboard-datatable";
-import { SectionCards } from "@/components/ui/section-cards";
-import { SiteHeader } from "@/components/layouts/navbar/site-header";
-import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
+import { SectionCards } from "@components/ui/section-cards";
+import { SiteHeader } from "@components/layouts/navbar/site-header";
+import { SidebarInset, SidebarProvider } from "@components/ui/sidebar";
 import data from "@/app/data/user.json";
 
 export default function Page() {
