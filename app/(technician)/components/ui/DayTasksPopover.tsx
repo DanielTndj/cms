@@ -33,7 +33,6 @@ export function DayTasksPopover({
   const isMobile = useIsMobile();
   const formattedDate = formatDate(date);
   
-  // ✅ ADD: Memoize handlers to prevent re-renders
   const handleCreateTask = React.useCallback(() => {
     onCreateTask?.(date);
   }, [onCreateTask, date]);
@@ -150,7 +149,7 @@ export function DayTasksPopover({
         <SheetTrigger asChild>
           {children}
         </SheetTrigger>
-        <SheetContent side="bottom" className="h-[80vh]">
+        <SheetContent side="bottom" className="h-[100vh]">
           <SheetHeader>
             <SheetTitle>Tugas Tanggal {formattedDate}</SheetTitle>
           </SheetHeader>

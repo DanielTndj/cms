@@ -5,20 +5,21 @@ import { useRouter, useParams } from 'next/navigation';
 import { AppSidebar } from "@components/layouts/sidebar/app-sidebar";
 import { SiteHeader } from "@components/layouts/navbar/site-header";
 import { SidebarInset, SidebarProvider } from "@components/ui/sidebar";
-import { Card, CardContent, CardHeader, CardTitle } from '@components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle, ColoredCard } from '@components/ui/card';
 import { Badge } from '@components/ui/badge';
 import { Button } from '@components/ui/button';
 import { ArrowLeft, MapPin, Phone, User, Calendar, Wrench, ChevronLeft, ChevronRight, X } from 'lucide-react';
 import { serviceRequests } from '../data/mockData';
 import { ServiceRequest } from '../types/entities';
 import Image from 'next/image';
+import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '../../../carousel';
 
 const statusConfig = {
-  'perlu-penanganan-teknisi': {
+  'perlu-penugasan-teknisi': {
     label: 'Perlu penanganan teknisi',
     color: 'bg-pink-100 dark:bg-pink-900/30 text-pink-800 dark:text-pink-300 border-pink-200 dark:border-pink-700'
   },
-  'dalam-pekerjaan': {
+  'dalam-pengerjaan': {
     label: 'Dalam pekerjaan',
     color: 'bg-yellow-100 dark:bg-yellow-900/30 text-yellow-800 dark:text-yellow-300 border-yellow-200 dark:border-yellow-700'
   },
@@ -35,13 +36,10 @@ const statusConfig = {
 interface ImageSliderProps {
   images: string[];
   isOpen: boolean;
-  currentIndex: number;
   onClose: () => void;
-  onNext: () => void;
-  onPrev: () => void;
 }
 
-function ImageSlider({ images, isOpen, currentIndex, onClose, onNext, onPrev }: ImageSliderProps) {
+function ImageSlider({ images, isOpen, onClose }: ImageSliderProps) {
   if (!isOpen) return null;
 
   return (
@@ -54,37 +52,29 @@ function ImageSlider({ images, isOpen, currentIndex, onClose, onNext, onPrev }: 
           <X className="h-8 w-8" />
         </button>
         
-        <div className="relative">
-          <Image
-            src={images[currentIndex]}
-            alt={`Image ${currentIndex + 1}`}
-            width={800}
-            height={600}
-            className="max-w-full max-h-[80vh] object-contain"
-          />
-          
+        <Carousel className="w-full max-w-3xl">
+          <CarouselContent>
+            {images.map((image, index) => (
+              <CarouselItem key={index}>
+                <div className="flex justify-center">
+                  <Image
+                    src={image}
+                    alt={`Documentation ${index + 1}`}
+                    width={800}
+                    height={600}
+                    className="max-w-full max-h-[80vh] object-contain rounded-lg"
+                  />
+                </div>
+              </CarouselItem>
+            ))}
+          </CarouselContent>
           {images.length > 1 && (
             <>
-              <button
-                onClick={onPrev}
-                className="absolute left-4 top-1/2 transform -translate-y-1/2 text-white hover:text-gray-300"
-              >
-                <ChevronLeft className="h-8 w-8" />
-              </button>
-              
-              <button
-                onClick={onNext}
-                className="absolute right-4 top-1/2 transform -translate-y-1/2 text-white hover:text-gray-300"
-              >
-                <ChevronRight className="h-8 w-8" />
-              </button>
-              
-              <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 text-white">
-                {currentIndex + 1} / {images.length}
-              </div>
+              <CarouselPrevious className="left-4 text-white border-white hover:bg-white hover:text-black" />
+              <CarouselNext className="right-4 text-white border-white hover:bg-white hover:text-black" />
             </>
           )}
-        </div>
+        </Carousel>
       </div>
     </div>
   );
@@ -95,7 +85,6 @@ export default function ServiceRequestDetailPage() {
   const params = useParams();
   const requestId = parseInt(params.id as string);
   
-  const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [isSliderOpen, setIsSliderOpen] = useState(false);
   
   const request = serviceRequests.find(r => r.id === requestId);
@@ -132,21 +121,8 @@ export default function ServiceRequestDetailPage() {
     );
   }
   
-  const openImageSlider = (index: number) => {
-    setCurrentImageIndex(index);
+  const openImageSlider = () => {
     setIsSliderOpen(true);
-  };
-  
-  const nextImage = () => {
-    setCurrentImageIndex((prev) => 
-      prev === request.images!.length - 1 ? 0 : prev + 1
-    );
-  };
-  
-  const prevImage = () => {
-    setCurrentImageIndex((prev) => 
-      prev === 0 ? request.images!.length - 1 : prev - 1
-    );
   };
 
   return (
@@ -182,13 +158,10 @@ export default function ServiceRequestDetailPage() {
                   </div>
                 </div>
 
-                {/* Rest of the content */}
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                  {/* Main Content */}
                   <div className="lg:col-span-2 space-y-6">
-                    {/* Problem Description */}
                     {request.description && (
-                      <Card>
+                      <ColoredCard variant="red">
                         <CardHeader>
                           <CardTitle className="flex items-center gap-2">
                             <div className="h-8 w-8 bg-red-100 rounded-full flex items-center justify-center">
@@ -200,7 +173,7 @@ export default function ServiceRequestDetailPage() {
                         <CardContent>
                           <p className="text-muted-foreground">{request.description}</p>
                         </CardContent>
-                      </Card>
+                      </ColoredCard>
                     )}
 
                     {/* Customer & Location Info */}
@@ -398,22 +371,31 @@ export default function ServiceRequestDetailPage() {
                           <CardTitle>Foto Dokumentasi</CardTitle>
                         </CardHeader>
                         <CardContent>
-                          <div className="grid grid-cols-2 gap-2">
-                            {request.images.map((image, index) => (
-                              <div 
-                                key={index}
-                                className="relative aspect-square cursor-pointer hover:opacity-80 transition-opacity"
-                                onClick={() => openImageSlider(index)}
-                              >
-                                <Image
-                                  src={image}
-                                  alt={`Documentation ${index + 1}`}
-                                  fill
-                                  className="object-cover rounded-lg"
-                                />
-                              </div>
-                            ))}
-                          </div>
+                          <Carousel className="w-full">
+                            <CarouselContent>
+                              {request.images.map((image, index) => (
+                                <CarouselItem key={index} className="basis-1/2">
+                                  <div 
+                                    className="relative aspect-square cursor-pointer hover:opacity-80 transition-opacity"
+                                    onClick={() => openImageSlider()}
+                                  >
+                                    <Image
+                                      src={image}
+                                      alt={`Documentation ${index + 1}`}
+                                      fill
+                                      className="object-cover rounded-lg"
+                                    />
+                                  </div>
+                                </CarouselItem>
+                              ))}
+                            </CarouselContent>
+                            {request.images.length > 2 && (
+                              <>
+                                <CarouselPrevious className="left-2" />
+                                <CarouselNext className="right-2" />
+                              </>
+                            )}
+                          </Carousel>
                           {request.images.length > 4 && (
                             <p className="text-sm text-muted-foreground mt-2 text-center">
                               +{request.images.length - 4} foto lainnya
@@ -440,10 +422,7 @@ export default function ServiceRequestDetailPage() {
                   <ImageSlider
                     images={request.images}
                     isOpen={isSliderOpen}
-                    currentIndex={currentImageIndex}
                     onClose={() => setIsSliderOpen(false)}
-                    onNext={nextImage}
-                    onPrev={prevImage}
                   />
                 )}
               </div>
@@ -452,17 +431,7 @@ export default function ServiceRequestDetailPage() {
         </div>
       </SidebarInset>
       
-      {/* Image Slider Modal */}
-      {request.images && (
-        <ImageSlider
-          images={request.images}
-          isOpen={isSliderOpen}
-          currentIndex={currentImageIndex}
-          onClose={() => setIsSliderOpen(false)}
-          onNext={nextImage}
-          onPrev={prevImage}
-        />
-      )}
+
     </SidebarProvider>
   );
 }

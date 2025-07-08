@@ -13,6 +13,7 @@ import { Label } from "@components/ui/label";
 import { Eye, EyeOff } from "lucide-react";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { cn } from "@lib/utils";
 
 export function LoginForm({
   className,

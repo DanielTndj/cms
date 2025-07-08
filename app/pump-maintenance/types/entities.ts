@@ -7,7 +7,7 @@ export interface ServiceRequest {
   pumpType: string;
   workDate: string;
   technicianRecommendation: string;
-  status: 'perlu-penanganan-teknisi' | 'dalam-pekerjaan' | 'dibatalkan' | 'selesai';
+  status: 'perlu-penugasan-teknisi' | 'dalam-pengerjaan' | 'dibatalkan' | 'selesai';
   priority: 'low' | 'medium' | 'high' | 'urgent';
   requestDate: string;
   images?: string[];

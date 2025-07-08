@@ -15,12 +15,12 @@ import { serviceRequests } from './data/mockData';
 import { ServiceRequest } from './types/entities';
 
 const statusConfig = {
-    'perlu-penanganan-teknisi': {
-        label: 'Perlu penanganan teknisi',
+    'perlu-penugasan-teknisi': {
+        label: 'Perlu penugasan teknisi',
         color: 'bg-pink-100 text-pink-800 border-pink-200 dark:bg-pink-900/20 dark:text-pink-300 dark:border-pink-800'
     },
-    'dalam-pekerjaan': {
-        label: 'Dalam pekerjaan',
+    'dalam-pengerjaan': {
+        label: 'Dalam pengerjaan',
         color: 'bg-yellow-100 text-yellow-800 border-yellow-200 dark:bg-yellow-900/20 dark:text-yellow-300 dark:border-yellow-800'
     },
     'dibatalkan': {
@@ -40,9 +40,8 @@ const priorityConfig = {
     'urgent': { label: 'Mendesak', color: 'bg-red-100 text-red-800 dark:bg-red-900/20 dark:text-red-300' }
 };
 
-// Pagination configuration
-const ITEMS_PER_PAGE_OPTIONS = [2, 6, 12, 24, 48];
-const DEFAULT_ITEMS_PER_PAGE = 12;
+const ITEMS_PER_PAGE_OPTIONS = [5, 10, 50, 100];
+const DEFAULT_ITEMS_PER_PAGE = 6;
 
 export default function PumpMaintenancePage() {
     const router = useRouter();
@@ -50,13 +49,10 @@ export default function PumpMaintenancePage() {
     const [statusFilter, setStatusFilter] = useState<string>('all');
     const [priorityFilter, setPriorityFilter] = useState<string>('all');
 
-    // Pagination states
     const [currentPage, setCurrentPage] = useState(1);
     const [itemsPerPage, setItemsPerPage] = useState(DEFAULT_ITEMS_PER_PAGE);
 
-    // Filter and pagination logic
     const { filteredRequests, paginatedRequests, totalPages, stats } = useMemo(() => {
-        // Apply filters
         const filtered = serviceRequests.filter(request => {
             const matchesSearch = request.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
                 request.customer.toLowerCase().includes(searchTerm.toLowerCase());
@@ -66,13 +62,11 @@ export default function PumpMaintenancePage() {
             return matchesSearch && matchesStatus && matchesPriority;
         });
 
-        // Calculate pagination
         const startIndex = (currentPage - 1) * itemsPerPage;
         const endIndex = startIndex + itemsPerPage;
         const paginated = filtered.slice(startIndex, endIndex);
         const totalPages = Math.ceil(filtered.length / itemsPerPage);
 
-        // Calculate stats
         const stats = serviceRequests.reduce((acc, request) => {
             acc[request.status] = (acc[request.status] || 0) + 1;
             return acc;
@@ -84,15 +78,14 @@ export default function PumpMaintenancePage() {
             totalPages,
             stats: {
                 total: serviceRequests.length,
-                pending: stats['perlu-penanganan-teknisi'] || 0,
-                inProgress: stats['dalam-pekerjaan'] || 0,
+                pending: stats['perlu-penugasan-teknisi'] || 0,
+                inProgress: stats['dalam-pengerjaan'] || 0,
                 completed: stats['selesai'] || 0,
                 cancelled: stats['dibatalkan'] || 0
             }
         };
     }, [searchTerm, statusFilter, priorityFilter, currentPage, itemsPerPage]);
 
-    // Reset to first page when filters change
     React.useEffect(() => {
         setCurrentPage(1);
     }, [searchTerm, statusFilter, priorityFilter, itemsPerPage]);
@@ -103,7 +96,6 @@ export default function PumpMaintenancePage() {
 
     const handlePageChange = (page: number) => {
         setCurrentPage(page);
-        // Scroll to top when page changes
         window.scrollTo({ top: 0, behavior: 'smooth' });
     };
 
@@ -142,11 +134,13 @@ export default function PumpMaintenancePage() {
                         <div className="flex flex-col gap-4 py-4 md:gap-6 md:py-6">
                             <div className="px-4 lg:px-6 space-y-6">
                                 {/* Header */}
-                                <div className="flex justify-between items-center">
-                                    <div>
-                                        <h1 className="text-3xl font-bold text-foreground">Pump Maintenance</h1>
-                                        <p className="text-muted-foreground mt-1">Kelola permintaan service dan maintenance pompa</p>
-                                    </div>
+                                <div className="mb-6">
+                                    <h1 className="text-3xl font-bold text-foreground">Pump Maintenance</h1>
+                                    <p className="text-muted-foreground mt-1">Kelola permintaan service dan maintenance pompa</p>
+                                </div>
+
+                                {/* Statistics Cards */}
+                                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4 mb-6">
                                     <Card>
                                         <CardContent className="p-4">
                                             <div className="flex items-center justify-between">
@@ -186,7 +180,6 @@ export default function PumpMaintenancePage() {
                                             </div>
                                         </CardContent>
                                     </Card>
-
                                     <Card>
                                         <CardContent className="p-4">
                                             <div className="flex items-center justify-between">
@@ -200,7 +193,6 @@ export default function PumpMaintenancePage() {
                                             </div>
                                         </CardContent>
                                     </Card>
-
                                     <Card>
                                         <CardContent className="p-4">
                                             <div className="flex items-center justify-between">
@@ -216,7 +208,6 @@ export default function PumpMaintenancePage() {
                                     </Card>
                                 </div>
 
-                                {/* Filters and Pagination Controls */}
                                 <Card>
                                     <CardContent className="p-4">
                                         <div className="flex flex-col md:flex-row gap-4">
@@ -238,8 +229,8 @@ export default function PumpMaintenancePage() {
                                                 </SelectTrigger>
                                                 <SelectContent>
                                                     <SelectItem value="all">Semua Status</SelectItem>
-                                                    <SelectItem value="perlu-penanganan-teknisi">Perlu Penanganan</SelectItem>
-                                                    <SelectItem value="dalam-pekerjaan">Dalam Pekerjaan</SelectItem>
+                                                    <SelectItem value="perlu-penugasan-teknisi">Perlu Penanganan</SelectItem>
+                                                    <SelectItem value="dalam-pengerjaan">Dalam Pekerjaan</SelectItem>
                                                     <SelectItem value="selesai">Selesai</SelectItem>
                                                     <SelectItem value="dibatalkan">Dibatalkan</SelectItem>
                                                 </SelectContent>
