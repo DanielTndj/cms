@@ -4,7 +4,7 @@ import React, { useState, useMemo } from "react";
 import { VIEW_TYPES, ViewType } from "@technician/constants/views";
 import { useAssignmentTechnician } from "@technician/hooks/useAssignmentTechnician";
 import { technicianApi, locationApi, assignmentApi } from "@technician/services/api";
-import { useApi } from "@technician/hooks/useApi";
+import { useApi } from '@hooks/useApi';
 import { generateCalendarDays, generateWeekDays, formatDate, isSameDay, getTechnicianOptions } from "@technician/utils/technicianHelper";
 import { CalendarHeader } from "../ui/CalendarHeader";
 import { StatsCards } from "../ui/StatsCard";
@@ -16,12 +16,10 @@ import { Card, CardContent } from "@components/ui/card";
 import { AssignmentFormData } from "@technician/types";
 
 export default function TechnicianAssignmentCalendar() {
-  // ✅ 1. Semua useState hooks dulu
   const [currentDate, setCurrentDate] = useState<Date>(new Date());
   const [selectedDate, setSelectedDate] = useState<Date>(new Date());
   const [view, setView] = useState<ViewType>(VIEW_TYPES.MONTH);
 
-  // ✅ 2. Semua useApi hooks dulu (jangan conditional)
   const { data: assignments, loading: assignmentsLoading, error: assignmentsError } = useApi(
     () => assignmentApi.getAssignments(),
     []
@@ -37,7 +35,6 @@ export default function TechnicianAssignmentCalendar() {
     []
   );
 
-  // ✅ 3. Custom hooks setelah built-in hooks
   const {
     assignments: managedAssignments,
     selectedAssignment,
@@ -54,7 +51,6 @@ export default function TechnicianAssignmentCalendar() {
     handleCloseModal,
   } = useAssignmentTechnician(assignments || []);
 
-  // ✅ 4. useMemo hooks
   const calendarDays = useMemo(() => {
     if (view === VIEW_TYPES.MONTH) return generateCalendarDays(currentDate);
     if (view === VIEW_TYPES.WEEK) return generateWeekDays(currentDate);
@@ -66,7 +62,6 @@ export default function TechnicianAssignmentCalendar() {
     [technicians]
   );
 
-  // ✅ 5. SETELAH semua hooks, baru conditional rendering
   const isLoading = assignmentsLoading || techniciansLoading || locationsLoading;
   
   if (isLoading) {

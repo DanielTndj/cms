@@ -1,5 +1,5 @@
 import { Technician } from "@technician/types";
-import { apiClient } from "./client";
+import { apiClient } from "@lib/api/client";
 import { technicians } from "@technician/data/mockData";
 
 export class TechnicianApiService {

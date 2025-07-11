@@ -1,5 +1,5 @@
 import { Assignment, AssignmentFormData } from "@technician/types";
-import { apiClient } from "./client";
+import { apiClient } from "@lib/api/client";
 import { sampleAssignments } from "@technician/data/mockData";
 
 export class AssignmentApiService {

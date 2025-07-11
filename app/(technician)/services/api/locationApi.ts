@@ -1,5 +1,5 @@
 import { Location } from "@technician/types";
-import { apiClient } from "./client";
+import { apiClient } from "@lib/api/client";
 import { locations } from "@technician/data/mockData";
 
 export class LocationApiService {

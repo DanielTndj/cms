@@ -7,7 +7,7 @@ import { Card, CardContent } from "@components/ui/card";
 import { Assignment } from "@technician/types";
 import { PRIORITY_COLORS } from "@technician/constants/priority";
 import { STATUS_COLORS } from "@technician/constants/status";
-import { useIsMobile } from "@hooks/use-mobile";
+import { useIsMobile } from "@hooks/useMobile";
 import { Calendar, MapPin, User, Clock, Plus } from "lucide-react";
 import { formatDate } from "@technician/utils/technicianHelper";
 
@@ -16,6 +16,8 @@ interface DayTasksPopoverProps {
   assignments: Assignment[];
   technicians: any[];
   children: React.ReactNode;
+  open?: boolean; 
+  onOpenChange?: (open: boolean) => void; 
   onCreateTask?: (date: Date) => void;
   onViewTask?: (assignment: Assignment) => void;
   onEditTask?: (assignment: Assignment) => void;
@@ -26,6 +28,8 @@ export function DayTasksPopover({
   assignments,
   technicians,
   children,
+  open,
+  onOpenChange,
   onCreateTask,
   onViewTask,
   onEditTask
@@ -35,7 +39,8 @@ export function DayTasksPopover({
   
   const handleCreateTask = React.useCallback(() => {
     onCreateTask?.(date);
-  }, [onCreateTask, date]);
+    onOpenChange?.(false); 
+  }, [onCreateTask, date, onOpenChange]);
 
   const handleViewTask = React.useCallback((assignment: Assignment) => {
     onViewTask?.(assignment);
@@ -145,11 +150,11 @@ export function DayTasksPopover({
 
   if (isMobile) {
     return (
-      <Sheet>
+      <Sheet open={open} onOpenChange={onOpenChange}>
         <SheetTrigger asChild>
           {children}
         </SheetTrigger>
-        <SheetContent side="bottom" className="h-[100vh]">
+        <SheetContent side="bottom" className="h-[80vh]">
           <SheetHeader>
             <SheetTitle>Tugas Tanggal {formattedDate}</SheetTitle>
           </SheetHeader>
@@ -162,7 +167,7 @@ export function DayTasksPopover({
   }
 
   return (
-    <Popover>
+    <Popover open={open} onOpenChange={onOpenChange}>
       <PopoverTrigger asChild>
         {children}
       </PopoverTrigger>

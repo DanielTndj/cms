@@ -24,7 +24,7 @@
       "@technician/*": ["./app/(technician)/*"],
       "@auth/*": ["./app/(auth)/*"],
       "@dashboard/*": ["./app/dashboard/*"],
-      "@settings/*": ["./features/settings/*"],
+      "@settings/*": ["./app/settings/*"],
       "@features/*": ["./features/*"],
       "@types/*": ["./types/*"],
       "@components/*": ["./components/*"],
